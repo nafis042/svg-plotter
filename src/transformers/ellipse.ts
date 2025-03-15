@@ -13,27 +13,23 @@ const ellipseTransformer: SVGNodeTransformer = (input, svgMeta, options) => {
         parseFloat(input.attributes.cy),
     );
 
-    // Debug logging
-    console.log('Debug: Element type:', input.name);
-    console.log('Debug: Fill attribute:', input.attributes.fill);
-    console.log('Debug: All attributes:', JSON.stringify(input.attributes, null, 2));
-    console.log('Debug: Is circle?', input.name === 'circle');
-    console.log('Debug: Has correct fill?', input.attributes.fill === '#FCE72C');
-    console.log('Debug: Full condition:', input.name === 'circle' && input.attributes.fill === '#FCE72C');
-
-    if (input.name === 'circle' && input.attributes.fill === '#FCE72C') {
-        console.log('Debug: Converting to point');
+    if (input.name === "circle" && input.attributes.fill === "#FCE72C") {
+        // console.log("Debug: Converting to point");
         const point = svgPointToCoordinate(
             center,
             svgMeta,
             options,
             input.attributes.transform,
         );
-        
-        const id = options.idMapper ? options.idMapper(input) : null;
-        const properties = options.propertyMapper
-            ? options.propertyMapper(input)
-            : null;
+
+        const id = input.attributes.id || null;
+        // Extract seat information from attributes
+        const properties = {
+            section: input.attributes.section || null,
+            row: input.attributes.row || null,
+            seat: input.attributes.seat || null,
+            class: "seat",
+        };
 
         const geometry: GeoJSON.Point = {
             type: "Point",
@@ -46,7 +42,7 @@ const ellipseTransformer: SVGNodeTransformer = (input, svgMeta, options) => {
         };
     }
 
-    console.log('Debug: Converting to polygon (default behavior)');
+    // console.log("Debug: Converting to polygon (default behavior)");
     // Original ellipse/circle to polygon conversion logic
     let rx = 0;
     let ry = 0;
