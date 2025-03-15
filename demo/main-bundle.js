@@ -432,6 +432,24 @@ var Vector2_1 = require("../Vector2");
 var mathUtils = require("../math-utils");
 var ellipseTransformer = function (input, svgMeta, options) {
     var center = new Vector2_1.default(parseFloat(input.attributes.cx), parseFloat(input.attributes.cy));
+    if (input.name === "circle" && input.attributes.fill === "#FCE72C") {
+        var point = (0, utils_1.svgPointToCoordinate)(center, svgMeta, options, input.attributes.transform);
+        var id_1 = input.attributes.id || null;
+        var properties_1 = {
+            section: input.attributes.section || null,
+            row: input.attributes.row || null,
+            seat: input.attributes.seat || null,
+            class: "seat",
+        };
+        var geometry_1 = {
+            type: "Point",
+            coordinates: point,
+        };
+        return {
+            features: [(0, utils_1.createFeature)(geometry_1, id_1, properties_1)],
+            children: [],
+        };
+    }
     var rx = 0;
     var ry = 0;
     if (input.attributes.r) {
